@@ -2,6 +2,9 @@ from aiogram import types
 from aiogram.dispatcher import Dispatcher
 from create_bot import bot
 
+from date_time import alarm
+import asyncio
+
 
 
 import config
@@ -28,7 +31,8 @@ stickers=['CAACAgIAAxkBAAEHeadj1CqOXs2Wf7Y_yJJELsZRNt9j9AACiRYAAsfqwEqfTbQfquYe0
 async def start_command(message : types.Message):
     await bot.send_message(message.from_user.id, '🤨', reply_markup=kb_mane)
     await message.delete()
-
+    t = await alarm.get_time()
+    await alarm.task_timer(hours=int(t[0]), minuts=int(t[1]))
 
 async def get_info(message : types.Message):
     global stickers
@@ -39,7 +43,6 @@ async def get_info(message : types.Message):
         await bot.send_sticker(message.from_user.id, random.choice(stickers))
         await bot.send_message(message.from_user.id, await rate.get_rate())
         await bot.send_message(message.from_user.id, await weather.get_weather())
-
 
     else:
         await bot.send_message(message.from_user.id, 'Я тебя не знаю.')
