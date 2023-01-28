@@ -27,6 +27,7 @@ stickers=['CAACAgIAAxkBAAEHeadj1CqOXs2Wf7Y_yJJELsZRNt9j9AACiRYAAsfqwEqfTbQfquYe0
 
 async def start_command(message : types.Message):
     await bot.send_message(message.from_user.id, '🤨', reply_markup=kb_mane)
+    await message.delete()
 
 
 async def get_info(message : types.Message):
@@ -42,11 +43,6 @@ async def get_info(message : types.Message):
 
     else:
         await bot.send_message(message.from_user.id, 'Я тебя не знаю.')
-
-    
-
-
-
 
 
 def register_Roky_handler(dp : Dispatcher):
