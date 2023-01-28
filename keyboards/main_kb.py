@@ -2,6 +2,6 @@ from aiogram.types import KeyboardButton, ReplyKeyboardMarkup
 b1 = KeyboardButton('Инфа')
 
 
-kb_mane = ReplyKeyboardMarkup()
+kb_mane = ReplyKeyboardMarkup(resize_keyboard=True)
 
 kb_mane.add(b1)

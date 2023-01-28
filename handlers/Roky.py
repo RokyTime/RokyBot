@@ -1,11 +1,14 @@
 from aiogram import types
 from aiogram.dispatcher import Dispatcher
 from create_bot import bot
-import requests
 
+
+
+import config
 import datetime
 import random
 from keyboards import kb_mane
+from request import weather, rate
 
 stickers=['CAACAgIAAxkBAAEHeadj1CqOXs2Wf7Y_yJJELsZRNt9j9AACiRYAAsfqwEqfTbQfquYe0i0E',
     'CAACAgIAAxkBAAEHealj1CsQUMUxXkZBV0kHLn8Yq-Ds0gACjA0AAqKEiUhTpgS0QAL2iy0E',
@@ -23,28 +26,22 @@ stickers=['CAACAgIAAxkBAAEHeadj1CqOXs2Wf7Y_yJJELsZRNt9j9AACiRYAAsfqwEqfTbQfquYe0
 ]
 
 async def start_command(message : types.Message):
-    await bot.send_message(message.from_user.id, 'Салам', reply_markup=kb_mane)
+    await bot.send_message(message.from_user.id, '🤨', reply_markup=kb_mane)
 
 
 async def get_info(message : types.Message):
     global stickers
     if message.text != 'Инфа':
         return
-    await bot.send_message(message.from_user.id, str(datetime.datetime.today()))
-    await bot.send_sticker(chat_id=message.from_user.id, sticker=random.choice(stickers))
-    city_id = 486071
-    appid = "ae8f8b7ed81c5375a2d7ef07a966169a"
-    try:
-        res = requests.get("http://api.openweathermap.org/data/2.5/weather",
-                 params={'id': city_id, 'units': 'metric', 'lang': 'ru', 'APPID': appid})
-        data = res.json()
-        await bot.send_message(message.from_user.id, f'🌧️Погода:{data["weather"][0]["description"]},\n\
-        🌡️Температура:{data["main"]["temp"]},\n\
-        🌡️Минимальная температура:{data["main"]["temp_min"]},\n\
-        🌡️Максимальная температура:{data["main"]["temp_max"]}')
-    except Exception as e:
-        bot.send_message(message.from_user.id , f'Exception (weather):{e}')
+    if message.from_user.id in config.admin_ID:
+        await bot.send_message(message.from_user.id, str(datetime.datetime.today()))
+        await bot.send_sticker(message.from_user.id, random.choice(stickers))
+        await bot.send_message(message.from_user.id, await rate.get_rate())
+        await bot.send_message(message.from_user.id, await weather.get_weather())
 
+
+    else:
+        await bot.send_message(message.from_user.id, 'Я тебя не знаю.')
 
     
 
