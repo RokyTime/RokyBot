@@ -11,8 +11,8 @@ import asyncio
 
 async def on_startup(_):
     print('Bot online.')
-    t = asyncio.run(alarm.get_time())
-    asyncio.run(alarm.task_timer(hours=int(t[0]), minuts=int(t[1])))
+    t = await alarm.get_time()
+    await alarm.task_timer(hours=int(t[0]), minuts=int(t[1]))
 
 
 Roky.register_Roky_handler(dp)
