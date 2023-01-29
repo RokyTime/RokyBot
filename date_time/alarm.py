@@ -37,10 +37,11 @@ async def get_time():
 async def task_timer(hours, minuts):
     t = (hours*60*60)+(minuts*60)
     await asyncio.sleep(t)
-    for admin in config.admin_ID:
-        await bot.send_message(admin, str(datetime.datetime.today()))
-        await bot.send_sticker(admin, random.choice(stickers))
-        await bot.send_message(admin, await rate.get_rate())
-        await bot.send_message(admin, await weather.get_weather())
-    return await task_timer(hours, minuts)
+    while True:
+        for admin in config.admin_ID:
+            await bot.send_message(admin, str(datetime.datetime.today()))
+            await bot.send_sticker(admin, random.choice(stickers))
+            await bot.send_message(admin, await rate.get_rate())
+            await bot.send_message(admin, await weather.get_weather())
+        await asyncio.sleep(24*60*60)
 

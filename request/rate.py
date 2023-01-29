@@ -9,5 +9,13 @@ async def get_rate():
     soup = BeautifulSoup(page, 'html.parser')
     #<span class="DFlfde SwHCTb" data-precision="2" data-value="70.7275">70,73</span>
     res = soup.findAll("span", {"class" : "DFlfde SwHCTb", "data-precision" : "2"})
-    return f'1$ == {res[0].text}₽'
+
+    link2 = 'https://coinmarketcap.com/ru/currencies/toncoin/'
+    page2 = requests.get(link2, my_user_agent).text
+    soup2 = BeautifulSoup(page2, 'html.parser')
+    res2 = soup2.findAll("div", {"class" : "priceValue"})
+
+
+    return f'1$ == {res[0].text}₽\n\
+1TON == {res2[0].text.replace("₽", "")}₽'
     

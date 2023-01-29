@@ -51,7 +51,6 @@ async def anek_handler(message : types.Message):
         await bot.send_message(message.from_user.id, await anekdot.get_anekdot(), reply_markup=kb_mane)
         await message.delete()
 
-
 def register_Roky_handler(dp : Dispatcher):
     dp.register_message_handler(start_command, commands=['start', 'help'])
     dp.register_message_handler(get_info, lambda message : 'Инф' in message.text)

@@ -4,4 +4,4 @@ b2 = KeyboardButton('Анекдот')
 
 kb_mane = ReplyKeyboardMarkup(resize_keyboard=True)
 
-kb_mane.add(b1).add(b2)
+kb_mane.row(b1, b2)

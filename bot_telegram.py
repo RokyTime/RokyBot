@@ -5,7 +5,6 @@ from create_bot import dp, bot
 from handlers import Roky
 
 
-
 async def on_startup(_):
     print('Bot online.')
    
