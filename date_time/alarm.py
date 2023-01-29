@@ -36,8 +36,6 @@ async def get_time():
 
 async def task_timer(hours, minuts):
     t = (hours*60*60)+(minuts*60)
-    print(f'Таймер сработает через {t} секунд')
-    print('Если ты это читаешь, то асинхронность работает')
     await asyncio.sleep(t)
     for admin in config.admin_ID:
         await bot.send_message(admin, str(datetime.datetime.today()))
