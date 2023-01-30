@@ -1,3 +1,2 @@
-from request import weather
-from request import rate
-from request import anekdot
+from request import api_parse
+from request import parse

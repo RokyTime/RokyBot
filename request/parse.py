@@ -11,7 +11,7 @@ async def get_rate():
     res = soup.findAll("span", {"class" : "DFlfde SwHCTb", "data-precision" : "2"})
 
     link2 = 'https://coinmarketcap.com/ru/currencies/toncoin/'
-    page2 = requests.get(link2, my_user_agent).text
+    page2 = requests.get(link2, config.my_user_agent).text
     soup2 = BeautifulSoup(page2, 'html.parser')
     res2 = soup2.findAll("div", {"class" : "priceValue"})
 
@@ -19,3 +19,12 @@ async def get_rate():
     return f'1$ == {res[0].text}₽\n\
 1TON == {res2[0].text.replace("₽", "")}₽'
     
+
+async def get_anekdot():
+    #<div class="text">- 67 процентов блондинок - полные дуры!<br>- А мне плевать. Я из остальных 13-ти!</div>
+    link = 'https://www.anekdot.ru/random/anekdot/'
+    user_agent = config.my_user_agent
+    page = requests.get(link, headers=user_agent).text
+    soup = BeautifulSoup(page, 'html.parser')
+    res = soup.findAll("div", {"class" : "text"})
+    return f'{res[0].text}'

@@ -4,7 +4,10 @@ import asyncio
 import config
 import datetime
 import random
-from request import rate, weather
+from request import api_parse, parse
+
+count = True
+
 
 stickers=['CAACAgIAAxkBAAEHeadj1CqOXs2Wf7Y_yJJELsZRNt9j9AACiRYAAsfqwEqfTbQfquYe0i0E',
     'CAACAgIAAxkBAAEHealj1CsQUMUxXkZBV0kHLn8Yq-Ds0gACjA0AAqKEiUhTpgS0QAL2iy0E',
@@ -35,13 +38,17 @@ async def get_time():
 
 
 async def task_timer(hours, minuts):
-    t = (hours*60*60)+(minuts*60)
-    await asyncio.sleep(t)
-    while True:
-        for admin in config.admin_ID:
-            await bot.send_message(admin, str(datetime.datetime.today()))
-            await bot.send_sticker(admin, random.choice(stickers))
-            await bot.send_message(admin, await rate.get_rate())
-            await bot.send_message(admin, await weather.get_weather())
-        await asyncio.sleep(24*60*60)
+    global count
+    if count:
+        print('Timer start.')
+        count = False
+        t = (hours*60*60)+(minuts*60)
+        await asyncio.sleep(t)
+        while True:
+            for admin in config.admin_ID:
+                await bot.send_message(admin, str(datetime.datetime.today()))
+                await bot.send_sticker(admin, random.choice(stickers))
+                await bot.send_message(admin, await parse.get_rate())
+                await bot.send_message(admin, await api_parse.get_weather())
+            await asyncio.sleep(24*60*60)
 

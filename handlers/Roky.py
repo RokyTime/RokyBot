@@ -10,9 +10,15 @@ import config
 import datetime
 import random
 from keyboards import kb_mane
-from request import weather, rate, anekdot
+from request import api_parse, parse
 
-stickers=['CAACAgIAAxkBAAEHeadj1CqOXs2Wf7Y_yJJELsZRNt9j9AACiRYAAsfqwEqfTbQfquYe0i0E',
+async def set_timer():
+    t = await alarm.get_time()
+    await alarm.task_timer(hours=int(t[0]), minuts=int(t[1]))
+
+
+async def get_message(message):
+    stickers=['CAACAgIAAxkBAAEHeadj1CqOXs2Wf7Y_yJJELsZRNt9j9AACiRYAAsfqwEqfTbQfquYe0i0E',
     'CAACAgIAAxkBAAEHealj1CsQUMUxXkZBV0kHLn8Yq-Ds0gACjA0AAqKEiUhTpgS0QAL2iy0E',
     'CAACAgEAAxkBAAEHeatj1CsxA5Q8PMAmalJq93DoH8zuMQACUwEAAml6MQW6hVyZUojP4y0E',
     'CAACAgIAAxkBAAEHea1j1CtJH8Tq0okgJBdEHUHYyPWyzwACrxYAAuWS2Uoi_Y50nFSDpi0E',
@@ -25,31 +31,37 @@ stickers=['CAACAgIAAxkBAAEHeadj1CqOXs2Wf7Y_yJJELsZRNt9j9AACiRYAAsfqwEqfTbQfquYe0
     'CAACAgIAAxkBAAEHecBj1CvQXz4Yom-XAAEaQp04mtAo5_EAAg0GAALSWogBef8AAdOuIoKJLQQ',
     'CAACAgIAAxkBAAEHecJj1CvlfmcnupqSKK7JRPNu0AiY2QACIQAD_2gqO1SDz_zBchjwLQQ',
     'CAACAgIAAxkBAAEHecRj1Cvu--f4qRTVd195UiocsUb9mgACuiwAAuCjggcMXhhpMbDivi0E'
-]
-
-async def start_command(message : types.Message):
-    await bot.send_message(message.from_user.id, '🤨', reply_markup=kb_mane)
-    await message.delete()
-    t = await alarm.get_time()
-    await alarm.task_timer(hours=int(t[0]), minuts=int(t[1]))
-
-async def get_info(message : types.Message):
-    global stickers
+    ]
     if message.from_user.id in config.admin_ID:
         await bot.send_message(message.from_user.id, str(datetime.datetime.today()))
         await bot.send_sticker(message.from_user.id, random.choice(stickers))
-        await bot.send_message(message.from_user.id, await rate.get_rate())
-        await bot.send_message(message.from_user.id, await weather.get_weather(), reply_markup=kb_mane)
+        await bot.send_message(message.from_user.id, await parse.get_rate())
+        await bot.send_message(message.from_user.id, await api_parse.get_weather(), reply_markup=kb_mane)
         await message.delete()
     else:
         await bot.send_message(message.from_user.id, 'Я тебя не знаю.')
         await message.delete()
 
 
+
+
+
+
+async def start_command(message : types.Message):
+    await bot.send_message(message.from_user.id, '🤨', reply_markup=kb_mane)
+    await message.delete()
+    await set_timer()
+
+async def get_info(message : types.Message):
+    await get_message(message)
+    await set_timer()
+
+
 async def anek_handler(message : types.Message):
     if message.from_user.id in config.admin_ID:
-        await bot.send_message(message.from_user.id, await anekdot.get_anekdot(), reply_markup=kb_mane)
+        await bot.send_message(message.from_user.id, await parse.get_anekdot(), reply_markup=kb_mane)
         await message.delete()
+        await set_timer()
 
 def register_Roky_handler(dp : Dispatcher):
     dp.register_message_handler(start_command, commands=['start', 'help'])
