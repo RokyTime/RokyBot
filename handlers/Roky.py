@@ -33,14 +33,16 @@ async def get_message(message):
     'CAACAgIAAxkBAAEHecRj1Cvu--f4qRTVd195UiocsUb9mgACuiwAAuCjggcMXhhpMbDivi0E'
     ]
     if message.from_user.id in config.admin_ID:
+        await message.delete()
         await bot.send_message(message.from_user.id, str(datetime.datetime.today()))
         await bot.send_sticker(message.from_user.id, random.choice(stickers))
         await bot.send_message(message.from_user.id, await parse.get_rate())
         await bot.send_message(message.from_user.id, await api_parse.get_weather(), reply_markup=kb_mane)
-        await message.delete()
+        
     else:
-        await bot.send_message(message.from_user.id, 'Я тебя не знаю.')
         await message.delete()
+        await bot.send_message(message.from_user.id, 'Я тебя не знаю.')
+        
 
 
 
@@ -59,8 +61,9 @@ async def get_info(message : types.Message):
 
 async def anek_handler(message : types.Message):
     if message.from_user.id in config.admin_ID:
-        await bot.send_message(message.from_user.id, await parse.get_anekdot(), reply_markup=kb_mane)
         await message.delete()
+        await bot.send_message(message.from_user.id, await parse.get_anekdot(), reply_markup=kb_mane)
+        
         await set_timer()
 
 def register_Roky_handler(dp : Dispatcher):
