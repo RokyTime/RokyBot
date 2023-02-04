@@ -50,5 +50,13 @@ async def task_timer(hours, minuts):
                 await bot.send_sticker(admin, random.choice(stickers))
                 await bot.send_message(admin, await parse.get_rate())
                 await bot.send_message(admin, await api_parse.get_weather())
+                await bot.send_message(admin, f'''\
+<b>Анекдот дня</b>:
+<i>
+{await parse.get_anekdot()}
+</i>
+<b>Подозреваю, что там какой-то баян или очередная шутка за 300,\
+ но я пытался поднять тебе настроение! Удачи сегодня!</b>
+''', parse_mode="HTML")
             await asyncio.sleep(24*60*60)
 
