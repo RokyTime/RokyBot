@@ -50,7 +50,7 @@ async def sql_read(user):
         if i[6] != None:
             vs += i[6]+"\n"
     #return (pon, vtor, sred, chet, pt, sb, vs)
-    return f'Список на понедельник: {pon}\nСписок на вторник: {vtor}\nСписок на четверг: {chet}\n\
+    return f'Список на понедельник: {pon}\nСписок на вторник: {vtor}\nСписок на среду: {sred}\nСписок на четверг: {chet}\n\
 Список на пятницу: {pt}\nСписок на субботу: {sb}\nСписок на воскресенье: {vs}'
 
 

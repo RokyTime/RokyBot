@@ -75,7 +75,8 @@ async def db_handler(message : types.Message):
     if message.from_user.id not in config.admin_ID:
         return
     await bot.send_message(message.from_user.id, 'Заполни свое расписание, пользуясь инлайн клавиатурой',\
-         reply_markup=InlineKeyboardMarkup().add(InlineKeyboardButton(text='Понедельник', callback_data='data_ Понедельник'))\
+         reply_markup=InlineKeyboardMarkup()\
+            .add(InlineKeyboardButton(text='Понедельник', callback_data='data_ Понедельник'))\
             .add(InlineKeyboardButton(text='Вторник', callback_data='data_ Вторник'))\
                 .add(InlineKeyboardButton(text='Среда', callback_data='data_ Среда'))\
                 .add(InlineKeyboardButton(text='Четверг', callback_data='data_ Четверг'))\
