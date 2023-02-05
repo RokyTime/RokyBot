@@ -5,6 +5,8 @@ import config
 import datetime
 import random
 from request import api_parse, parse
+from users_database import db_requests
+
 
 count = True
 
@@ -50,6 +52,7 @@ async def task_timer(hours, minuts):
                 await bot.send_sticker(admin, random.choice(stickers))
                 await bot.send_message(admin, await parse.get_rate())
                 await bot.send_message(admin, await api_parse.get_weather())
+                await bot.send_message(admin, await db_requests.sql_read(admin))
                 await bot.send_message(admin, f'''\
 <b>Анекдот дня</b>:
 <i>
