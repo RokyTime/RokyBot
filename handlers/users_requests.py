@@ -14,7 +14,7 @@ import random
 from keyboards import kb_mane
 from request import api_parse, parse
 from aiogram.dispatcher.filters import Text
-from users_database.db_requests import bd_add
+from users_database.db_requests import bd_add, sql_read, sql_read2, sql_delete_f
 
 async def set_timer():
     t = await alarm.get_time()
@@ -61,6 +61,7 @@ async def start_command(message : types.Message):
 async def get_info(message : types.Message):
     await get_message(message)
     await set_timer()
+    
 
 
 async def anek_handler(message : types.Message):
@@ -85,8 +86,26 @@ async def db_handler(message : types.Message):
 
 
 async def db_callback(callback : types.CallbackQuery):
-    await bot.send_message(callback.from_user.id, f'Расписание на {callback.data.replace("data_ ", "")}',\
-         reply_markup=InlineKeyboardMarkup().add(InlineKeyboardButton(text='Добавить пунк.', callback_data=f'data__ 1 {callback.data.replace("data_ ", "")}')))
+    await bot.send_message(callback.from_user.id, f'Расписание на {callback.data.replace("data_ ", "")}\
+        \nДобавь новый пункт или нажми на уже существующий для удаления.',\
+         reply_markup=InlineKeyboardMarkup()\
+            .add(InlineKeyboardButton(text='Добавить пункт.', callback_data=f'data__ 1 {callback.data.replace("data_ ", "")}')))
+    ind = 0
+    if callback.data.replace("data_ ", "") == 'Понедельник':
+        ind = 1
+    if callback.data.replace("data_ ", "") == 'Вторник':
+        ind = 2
+    if callback.data.replace("data_ ", "") == 'Среда':
+        ind = 3
+    if callback.data.replace("data_ ", "") == 'Четверг':
+        ind = 4
+    if callback.data.replace("data_ ", "") == 'Пятница':
+        ind = 5
+    if callback.data.replace("data_ ", "") == 'Суббота':
+        ind = 6
+    if callback.data.replace("data_ ", "") == 'Воскресенье':
+        ind = 7
+    await sql_read2(callback, ind, callback.data.replace("data_ ", ""))
 
 
 async def get_todo(message : types.Message):
@@ -114,13 +133,29 @@ async def todo_handler(message : types.Message, state : FSMContext):
     await bd_add(toFSMdata)
     await state.finish()
 
+
+async def sql_callback_handler(callback : types.CallbackQuery):
+    req = callback.data.replace("delete_ ", "").split(" ")
+    print(req)
+    await sql_delete_f(callback, req)
+    await callback.answer('Удалено.', show_alert=True)
+
+async def ras(message : types.Message):
+    text = await sql_read(str(message.from_user.id))
+    await bot.send_message(chat_id=message.from_user.id, text=text)
+
+
 def register_Roky_handler(dp : Dispatcher):
     dp.register_message_handler(start_command, commands=['start', 'help'])
     dp.register_message_handler(get_info, lambda message : 'Инфа' in message.text)
     dp.register_message_handler(anek_handler, lambda message : 'Анекдот' in message.text)
     dp.register_message_handler(db_handler, lambda message : 'расписание' in message.text)
     dp.register_callback_query_handler(db_callback, Text(startswith='data_ '))
+
+    dp.register_callback_query_handler(sql_callback_handler, Text(startswith='delete_ '))
     
+    dp.register_message_handler(ras, lambda message : 'Расписание' in message.text)
+
     dp.register_callback_query_handler(toFSM, Text(startswith='data__ '), state=None)
     dp.register_message_handler(todo_handler, state=FSMUser.todo)
     

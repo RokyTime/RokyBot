@@ -9,7 +9,7 @@ async def get_weather():
     appid = config.appid
     try:
         res = requests.get("http://api.openweathermap.org/data/2.5/weather",
-                 params={'id': city_id, 'units': 'metric', 'lang': 'ru', 'APPID': appid})
+                 params={'id': city_id, 'units': 'metric', 'lang': 'ru', 'APPID': appid}, timeout=5)
         data = res.json()
         text = f'🌧️Погода:{data["weather"][0]["description"]},\n\n\
 🌡️Температура:{data["main"]["temp"]} C°,\n\n\
