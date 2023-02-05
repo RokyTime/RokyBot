@@ -1,4 +1,5 @@
 import sqlite3 as sq
+from aiogram import types
 
 async def db_connect():
     global base, cur
@@ -17,3 +18,10 @@ async def bd_add(data):
         #d2=data['day of the week']), data['Todo'])
     cur.execute("INSERT INTO __{}({}) VALUES(?)".format(data['Bot user'], data['day of the week']), (data['Todo'], ))
     base.commit()
+    await sql_read(data['Bot user'])
+
+
+
+async def sql_read(adddd):
+    global base, cur
+    print (cur.execute('SELECT * FROM __{}'.format(adddd)).fetchall())

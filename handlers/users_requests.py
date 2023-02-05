@@ -86,14 +86,7 @@ async def db_handler(message : types.Message):
 
 async def db_callback(callback : types.CallbackQuery):
     await bot.send_message(callback.from_user.id, f'Расписание на {callback.data.replace("data_ ", "")}',\
-         reply_markup=InlineKeyboardMarkup().add(InlineKeyboardButton(text='1.', callback_data=f'data_ 1 {callback.data.replace("data_ ", "")}'))\
-            .add(InlineKeyboardButton(text='2.', callback_data=f'data__ 2 {callback.data.replace("data_ ", "")}'))\
-                .add(InlineKeyboardButton(text='3.', callback_data=f'data__ 3 {callback.data.replace("data_ ", "")}'))\
-                    .add(InlineKeyboardButton(text='4.', callback_data=f'data__ 4 {callback.data.replace("data_ ", "")}'))\
-                        .add(InlineKeyboardButton(text='5.', callback_data=f'data__ 5 {callback.data.replace("data_ ", "")}'))\
-                            .add(InlineKeyboardButton(text='6.', callback_data=f'data__ 6 {callback.data.replace("data_ ", "")}'))\
-                                .add(InlineKeyboardButton(text='7.', callback_data=f'data__ 7 {callback.data.replace("data_ ", "")}'))\
-                                    .add(InlineKeyboardButton(text='8.', callback_data=f'data__ 8 {callback.data.replace("data_ ", "")}')))
+         reply_markup=InlineKeyboardMarkup().add(InlineKeyboardButton(text='Добавить пунк.', callback_data=f'data__ 1 {callback.data.replace("data_ ", "")}')))
 
 
 async def get_todo(message : types.Message):
