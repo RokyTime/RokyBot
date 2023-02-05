@@ -8,9 +8,12 @@ async def db_connect():
         print('База данных подключена.')
 
 async def bd_add(data):
+    global base, cur
     print(data)
-    base.execute("CREATE TABLE IF NOT EXISTS '?'(Понедельник TEXT, Вторник TEXT, \
-        Среда TEXT, Четверг TEXT, Пятница TEXT, Суббота TEXT, Воскресенье TEXT)", (str(data['Bot user']), ))
+    base.execute('CREATE TABLE IF NOT EXISTS __{}(Понедельник, Вторник, Среда, Четверг, \
+        Пятница, Суббота, Воскресенье)'.format(data['Bot user']))
     base.commit()
-    cur.execute(f"INSERT INTO {data['Bot user']}({data['day of the week']}) VALUES({data['Todo']})")
+    #cur.execute("INSERT INTO __{d1}({d2}) VALUES(?)".format(d1=data['Bot user'], \
+        #d2=data['day of the week']), data['Todo'])
+    cur.execute("INSERT INTO __{}({}) VALUES(?)".format(data['Bot user'], data['day of the week']), (data['Todo'], ))
     base.commit()
